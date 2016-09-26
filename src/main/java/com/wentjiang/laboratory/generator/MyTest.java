@@ -10,5 +10,6 @@ public class MyTest {
     public void print(){
         System.out.println("test");
         System.out.println("test2");
+        System.out.println("test3");
     }
 }
