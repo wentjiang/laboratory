@@ -19,7 +19,7 @@ public class SignTest {
         HttpClient httpClient = new HttpClient();
         PostMethod httpMethod = new PostMethod("http://127.0.0.1:8115/comment/save");
         Map<String,Object> map = new HashMap<String, Object>();
-        map.put("appId","6");
+        map.put("appId","5");
         map.put("contentId","100");
         map.put("fromUserId","100");
         map.put("fromNickname","nickname");
@@ -60,7 +60,7 @@ public class SignTest {
                 i++;
             }
         }
-        String calcSign = EncryptUtils.saltSHA256("nokey", desSb.toString());
+        String calcSign = EncryptUtils.saltSHA256("", desSb.toString());
         return calcSign;
     }
 }
