@@ -11,9 +11,9 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        serviceConsumer(new ServiceOneFactory());
-        serviceConsumer(new ServiceTwoFactory());
-        serviceConsumer(ImplOneService::new);       //这是什么语法?
-        serviceConsumer(ImplTwoService.serviceFactory);
+//        serviceConsumer(new ServiceOneFactory());
+//        serviceConsumer(new ServiceTwoFactory());
+//        serviceConsumer(ImplOneService::new);       //这是什么语法?
+//        serviceConsumer(ImplTwoService.serviceFactory);
     }
 }
