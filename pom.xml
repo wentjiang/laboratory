@@ -18,10 +18,6 @@
         </repository>
     </repositories>
 
-    <!--<dependencies>-->
-
-
-    <!--</dependencies>-->
     <properties>
         <servlet-api.version>3.1.0</servlet-api.version>
         <jsp-api.version>2.3.1</jsp-api.version>
@@ -109,6 +105,7 @@
             <artifactId>activemq-core</artifactId>
             <version>5.7.0</version>
         </dependency>
+
 
         <dependency>
             <groupId>javax.annotation</groupId>
