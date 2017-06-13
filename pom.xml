@@ -49,6 +49,12 @@
         <java.building.version>1.7</java.building.version>
         <encoding>UTF-8</encoding>
         <lombok.version>1.16.10</lombok.version>
+
+        <java.building.version>1.8</java.building.version>
+        <encoding>UTF-8</encoding>
+
+        <static.dir>D:/static</static.dir>
+
     </properties>
 
     <dependencies>
@@ -392,8 +398,244 @@
             <version>2.7.3</version>
         </dependency>
 
-
     </dependencies>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>logback.xml</include>
+                    <include>*.properties</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <!-- compiler插件, 设定JDK版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${java.building.version}</source>
+                    <target>${java.building.version}</target>
+                    <encoding>${encoding}</encoding>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
 
+            <!-- test插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.16</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+
+            <!-- war打包插件, 设定war包名称不带版本号 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <warSourceExcludes>static/**</warSourceExcludes>
+                </configuration>
+            </plugin>
+
+            <!-- YUI Compressor Maven压缩插件 -->
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>yuicompressor-maven-plugin</artifactId>
+                <version>1.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>compress</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- 读取js,css文件采用UTF-8编码 -->
+                    <encoding>UTF-8</encoding>
+                    <!-- 不显示js可能的错误 -->
+                    <jswarn>false</jswarn>
+                    <!-- 若存在已压缩的文件，会先对比源文件是否有改动 有改动便压缩，无改动就不压缩 -->
+                    <force>true</force>
+                    <!-- 在指定的列号后插入新行 -->
+                    <linebreakpos>-1</linebreakpos>
+                    <!-- 压缩之前先执行聚合文件操作 -->
+                    <preProcessAggregates>true</preProcessAggregates>
+                    <!-- 压缩后保存文件后缀 -->
+                    <nosuffix>true</nosuffix>
+                    <!--<suffix>.min</suffix>-->
+                    <!-- 源目录，即需压缩的根目录 -->
+                    <sourceDirectory>${basedir}/src/main/webapp/static</sourceDirectory>
+                    <!-- 压缩后输出文件目录 -->
+                    <outputDirectory>${basedir}/target/static</outputDirectory>
+                    <!-- 压缩js和css文件 -->
+                    <includes>
+                        <include>js/**/*.js</include>
+                        <include>css/**/*.css</include>
+                    </includes>
+                    <excludes>
+                        <exclude>js/**/*.min.js</exclude>
+                        <exclude>js/**/*-min.js</exclude>
+                        <exclude>css/**/*.min.css</exclude>
+                        <exclude>css/**/*-min.css</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <!-- 复制 min 文件-->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+                <executions>
+                    <execution>
+                        <id>copy-min</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/src/main/webapp/static</directory>
+                                    <includes>
+                                        <include>flash/**/*.swf</include>
+                                        <include>js/**/*.min.js</include>
+                                        <include>js/**/*-min.js</include>
+                                        <include>css/**/*.min.css</include>
+                                        <include>css/**/*-min.css</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 复制静态文件到静态目录 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>copy_static</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target if="${copy_static}">
+                                <echo message="copy static file to static.dir ..."/>
+                                <delete dir="${static.dir}/js"/>
+                                <delete dir="${static.dir}/css"/>
+                                <delete dir="${static.dir}/img"/>
+                                <copy todir="${static.dir}" overwrite="true" includeEmptyDirs="true">
+                                    <fileset dir="src/main/webapp/static">
+                                        <include name="**"/>
+                                        <exclude name="js/**"/>
+                                        <exclude name="css/**"/>
+                                    </fileset>
+                                    <fileset dir="target/static">
+                                        <include name="**"/>
+                                    </fileset>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy_static_src</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target if="${copy_static_src}">
+                                <echo message="copy static src file to static.dir ..."/>
+                                <delete dir="${static.dir}/js"/>
+                                <delete dir="${static.dir}/css"/>
+                                <delete dir="${static.dir}/img"/>
+                                <copy todir="${static.dir}" overwrite="true" includeEmptyDirs="true">
+                                    <fileset dir="src/main/webapp/static">
+                                        <include name="**"/>
+                                    </fileset>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <copy_static>true</copy_static>
+                <copy_static_src>false</copy_static_src>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <finalName>${project.name}.dev</finalName>
+                <filters>
+                    <filter>profile-dev.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <copy_static>true</copy_static>
+                <copy_static_src>false</copy_static_src>
+            </properties>
+            <build>
+                <finalName>${project.name}.test</finalName>
+                <filters>
+                    <filter>profile-test.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <profile>
+            <id>staging</id>
+            <build>
+                <finalName>${project.name}.staging</finalName>
+                <filters>
+                    <filter>profile-staging.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <build>
+                <finalName>${project.name}.prod</finalName>
+                <filters>
+                    <filter>profile-prod.properties</filter>
+                </filters>
+            </build>
+        </profile>
+    </profiles>
 </project>
