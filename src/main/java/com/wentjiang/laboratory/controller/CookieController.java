@@ -30,6 +30,7 @@ public class CookieController {
                                          String value,
                                          HttpServletResponse response) {
         CookieUtil.addCookie(response, name, value, 3600);
+        CookieUtil.addLBCookie(response, name + "LB", value + " LB", 3600);
         Map<String, String> map = new HashMap<>();
         map.put("name", name);
         map.put("value", value);

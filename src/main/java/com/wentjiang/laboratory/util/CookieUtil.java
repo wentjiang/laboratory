@@ -9,6 +9,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CookieUtil {
 
+    public static void addLBCookie(HttpServletResponse response, String name, String value, int maxAge){
+        Cookie cookie = new Cookie(name, value);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(maxAge);
+        cookie.setDomain(".laboratory.wentjiang.com");
+        cookie.setPath("/");
+        response.addCookie(cookie);
+    }
+
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
         Cookie cookie = new Cookie(name, value);
         cookie.setHttpOnly(true);

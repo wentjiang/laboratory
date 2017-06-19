@@ -1,6 +1,5 @@
 package com.wentjiang.laboratory.util;
 
-import org.apache.commons.lang.StringUtils;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -12,14 +11,12 @@ import java.nio.charset.StandardCharsets;
  */
 public class Base64Util {
 
+    private static BASE64Decoder decoder = new BASE64Decoder();
+
     /**
      * 获取base64加密串
      */
     public static String getBase64(String str) {
-        if (StringUtils.isEmpty(str)) {
-            return null;
-        }
-
         byte[] bytes = null;
         String result = null;
 
@@ -30,23 +27,32 @@ public class Base64Util {
     }
 
     /**
+     * 获取byte的base64编码字符串
+     */
+    public static String getBase64(byte[] bytes) {
+        return new BASE64Encoder().encode(bytes);
+    }
+
+    /**
      * 获取base64解密串
      */
-    public static String deBase64(String str) {
-        if (StringUtils.isEmpty(str)) {
-            return null;
-        }
-
-        byte[] bytes = null;
-        String result = null;
-
-        BASE64Decoder decoder = new BASE64Decoder();
+    public static byte[] deBase64Bytes(String str) {
+        byte[] result = null;
         try {
-            bytes = decoder.decodeBuffer(str);
-            result = new String(bytes, StandardCharsets.UTF_8);
+            result = decoder.decodeBuffer(str);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;
+    }
+
+    /**
+     * 获取base64解密串
+     */
+    public static String deBase64(String str) {
+        String result = null;
+        byte[] bytes = deBase64Bytes(str);
+        result = new String(bytes, StandardCharsets.UTF_8);
         return result;
     }
 
