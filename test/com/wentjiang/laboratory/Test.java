@@ -5,28 +5,12 @@ package com.wentjiang.laboratory;
  */
 public class Test {
     public static void main(String[] args) {
-//        System.out.println(System.getProperty("user.dir"));
-        String str = "curl -XPOST http://localhost:9200/index/fulltext/_mapping -d'" +
-                "{" +
-                "\"fulltext\": {" +
-                "\"_all\": {" +
-                "\"analyzer\": \"ik_max_word\"," +
-                "\"search_analyzer\": \"ik_max_word\"," +
-                "\"term_vector\": \"no\"," +
-                "\"store\": \"false\"" +
-                "}," +
-                "\"properties\": {" +
-                "\"content\": {" +
-                "\"type\": \"text\"," +
-                "\"analyzer\": \"ik_max_word\"," +
-                "\"search_analyzer\": \"ik_max_word\"," +
-                "\"include_in_all\": \"true\"," +
-                "\"boost\": 8" +
-                "}" +
-                "}" +
-                "}" +
-                "}'";
-        System.out.println(str);
+        Integer i = 11;
+        Integer j = 2;
+        System.out.println(Integer.toBinaryString(i));
+        System.out.println(Integer.toBinaryString(j));
 
+
+        System.out.println(Integer.toBinaryString(i & j));
     }
 }
