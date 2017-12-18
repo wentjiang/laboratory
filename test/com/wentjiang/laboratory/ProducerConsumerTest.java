@@ -22,7 +22,7 @@ public class ProducerConsumerTest extends BaseTest{
     public void testSend() {
         for (int i=0; i<20; i++) {
 //            producerService.sendMessage(destination, "你好，生产者！这是消息：" + (i+1));
-            producerService.sendObjectMessage(destination,new User("jiang"+i,23,"wentjiang"));
+            producerService.sendObjectMessage(destination,new User(12, "jiang"+i,23,"wentjiang"));
         }
     }
 }

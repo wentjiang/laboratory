@@ -1,4 +1,4 @@
-package com.wentjiang.laboratory.designMode.proxy;
+package com.wentjiang.laboratory.designMode.proxy.example1;
 
 import java.io.File;
 import java.io.FileOutputStream;

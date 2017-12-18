@@ -33,7 +33,7 @@ public class JdbcTemplateTest extends BaseTest {
     }
     @org.junit.Test
     public void addUser(){
-        User user = new User("jiangwentao1", 24, "wentjiang1");
+        User user = new User(12,"jiangwentao1", 24, "wentjiang1");
         jdbcTemplate.update(USER_INSERT_SQL,user.getName(),user.getAge(),user.getUsername());
         System.out.println("success");
     }

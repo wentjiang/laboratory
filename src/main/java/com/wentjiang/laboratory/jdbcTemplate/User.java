@@ -1,10 +1,13 @@
 package com.wentjiang.laboratory.jdbcTemplate;
 
+import lombok.Builder;
+
 import java.io.Serializable;
 
 /**
  * Created by jiangwentao on 11/23/2016 10:41 AM.
  */
+@Builder
 public class User implements Serializable{
     private int id;
     private String name;
@@ -14,7 +17,7 @@ public class User implements Serializable{
     public User() {
     }
 
-    public User(String name, int age, String username) {
+    public User(int id, String name, int age, String username) {
         this.name = name;
         this.age = age;
         this.username = username;
