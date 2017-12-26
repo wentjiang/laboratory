@@ -5,6 +5,5 @@ package com.wentjiang.laboratory;
  */
 public class Test {
     public static void main(String[] args) {
-
     }
 }

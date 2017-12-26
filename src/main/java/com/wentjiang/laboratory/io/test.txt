@@ -119,8 +119,6 @@
         <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
                resourceName="UserDatabase"/>
       </Realm>
-      <Host name="fx.wanmei.com"  appBase="webapps" unpackWARs="true" autoDeploy="true">
-            <Context path="" docBase="/web/tomcat_vhost/fx.wanmei.com/" debug="0" reloadable="flase" crossContext="true"></Context>
       </Host>
     </Engine>
   </Service>
